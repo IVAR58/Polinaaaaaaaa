@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение для Полины 💕</title>
+    <!-- مكتبة التأثيرات للقلوب عند الموافقة -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe6e9 0%, #ffb6c1 100%);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+            max-width: 450px;
+            width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 15px 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-yes {
+            background-color: #ff4d6d;
+            color: white;
+            z-index: 10;
+        }
+
+        .btn-yes:hover {
+            background-color: #ff758f;
+        }
+
+        .btn-no {
+            background-color: #6c757d;
+            color: white;
+            z-index: 1;
+        }
+
+        /* رسالة الشكر */
+        .thank-you {
+            display: none;
+            animation: fadeIn 1s forwards;
+        }
+
+        .thank-you h2 {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .thank-you p {
+            font-size: 1.3rem;
+            color: #444;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <!-- السؤال -->
+        <div id="questionSection">
+            <h1>Полина! ✨</h1>
+            <p>Пойдём погуляем вместе? 🌹<br>Я обещаю отличный день и прекрасное настроение!</p>
+            <div class="buttons">
+                <button class="btn btn-yes" id="yesBtn" onclick="acceptInvitation()">ДА! 🥰</button>
+                <button class="btn btn-no" id="noBtn" onclick="growYes()">Нет 😢</button>
+            </div>
+        </div>
+
+        <!-- رسالة الشكر عند الموافقة -->
+        <div class="thank-you" id="thankYouSection">
+            <h2>Урааа! 🎉💖</h2>
+            <p>Спасибо, Полина! Я очень рад! <br>Готовься к замечательной прогулке! 🌺✨</p>
+        </div>
+    </div>
+
+    <script>
+        let yesScale = 1;
+        const noPhrases = [
+            "Ты уверена? 🥺",
+            "Подумай ещё раз! 💭",
+            "Ну пожалуйста! 🌹",
+            "Не нажимай сюда! 🙈",
+            "У тебя нет шансов 😜",
+            "Только ДА! ❤️"
+        ];
+        let phraseIndex = 0;
+
+        function growYes() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+
+            // تكبير زر نعم
+            yesScale += 0.45;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // تغيير النص على زر لا لتشجيعها أكثر
+            noBtn.innerText = noPhrases[phraseIndex % noPhrases.length];
+            phraseIndex++;
+
+            // إذا كَبُر الزر جداً يُخفي زر لا تماماً
+            if (yesScale > 4.5) {
+                noBtn.style.display = 'none';
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.fontSize = '3rem';
+                yesBtn.style.display = 'flex';
+                yesBtn.style.justifyContent = 'center';
+                yesBtn.style.alignItems = 'center';
+                yesBtn.innerText = 'ДА! 🥰 (Нажми сюда)';
+            }
+        }
+
+        function acceptInvitation() {
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('thankYouSection').style.display = 'block';
+
+            // إطلاق قلوب وألعاب نارية ترحيبية
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ff758f', '#ffb6c1', '#ffffff']
+            });
+        }
+    </script>
+</body>
+</html>
